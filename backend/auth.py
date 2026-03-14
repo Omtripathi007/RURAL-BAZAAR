@@ -8,7 +8,9 @@ from sqlalchemy.orm import Session
 from database import get_db
 import models
 
-SECRET_KEY = "vocallocal-secret-key-2024-hackathon"
+import os
+
+SECRET_KEY = os.getenv("JWT_SECRET", "vocallocal-secret-key-2024-hackathon")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # 7 days
 
