@@ -13,48 +13,33 @@ RuralBazaar is a full-stack platform designed to help rural artisans list their 
 - **Frontend**: React, Vite, Axios, Recharts
 - **AI**: Google Gemini Pro (Text & Vision)
 
-## Deployment on Railway
+## Deployment
 
-### 1. Prerequisites
-- A [Railway](https://railway.app/) account.
-- [Railway CLI](https://docs.railway.app/guides/cli) installed (optional but recommended).
+### 1. Database (Supabase)
+1. Create a project on [Supabase](https://supabase.com/).
+2. Go to **Project Settings** > **Database**.
+3. Copy the **Connection String** (URI).
+   - Ensure you use the "Transaction" mode (port 6543) if you're using pooling, or just the standard connection string.
+   - Example: `postgresql://postgres:[YOUR-PASSWORD]@db.[YOUR-ID].supabase.co:5432/postgres`
 
-### 2. Deployment Steps
+### 2. Backend (Render)
+1. Link your GitHub repo to [Render](https://render.com/).
+2. Create a new **Web Service**.
+3. Set **Build Command**: `pip install -r requirements.txt`
+4. Set **Start Command**: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+5. Add **Environment Variables**:
+   - `DATABASE_URL`: (Your Supabase connection string)
+   - `GEMINI_API_KEY`: (Your Google Gemini key)
+   - `JWT_SECRET`: (A random secret string)
 
-#### Method A: GitHub (Recommended)
-1. Push your code to a GitHub repository.
-2. Log in to [Railway](https://railway.app/).
-3. Click "New Project" > "Deploy from GitHub".
-4. Select your repository.
-5. Railway will detect the `railway.json` and create two services: `backend` and `frontend`.
+### 3. Frontend (Vercel)
+1. Link your GitHub repo to [Vercel](https://vercel.com/).
+2. Create a new **Project**.
+3. Add **Environment Variables**:
+   - `VITE_API_URL`: (Your Render backend URL, e.g., `https://rural-bazaar.onrender.com`)
 
-#### Method B: Railway CLI
-1. Run `railway login`.
-2. Run `railway link`.
-3. Run `railway up`.
-
-### 3. Environment Variables
-
-#### Backend Service
-- `DATABASE_URL`: Your PostgreSQL connection string (Railway can provision this for you).
-- `GEMINI_API_KEY`: Your Google Gemini API key.
-- `JWT_SECRET`: A secret key for authentication.
-
-#### Frontend Service
-- `VITE_API_URL`: The URL of your deployed backend service (e.g., `https://backend-production.up.railway.app`).
-
-## Development
-
-### Backend
-```bash
-cd backend
-pip install -r requirements.txt
-uvicorn main:app --reload
-```
-
-### Frontend
-```bash
-cd frontend
-npm install
-npm run dev
-```
+## Tech Stack
+- **Frontend**: React (Vite) on Vercel
+- **Backend**: FastAPI (Python) on Render
+- **Database**: PostgreSQL on Supabase
+- **AI**: Google Gemini Pro

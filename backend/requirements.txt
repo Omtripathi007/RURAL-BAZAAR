@@ -11,3 +11,4 @@ Pillow
 httpx
 alembic
 google-generativeai
+psycopg2-binary
